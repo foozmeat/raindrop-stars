@@ -9,8 +9,8 @@ def build_sources() -> list[StarSource]:
     """Return one source per configured token; skip forges with no token."""
     sources: list[StarSource] = []
 
-    if config.GITHUB_STAR_TOKEN:
-        sources.append(GitHubSource(config.GITHUB_STAR_TOKEN))
+    if config.GH_STAR_TOKEN:
+        sources.append(GitHubSource(config.GH_STAR_TOKEN))
 
     if config.GITLAB_TOKEN:
         sources.append(GitLabSource(config.GITLAB_TOKEN, config.GITLAB_URL))

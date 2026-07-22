@@ -61,11 +61,14 @@ Key invariants:
 - **Logging is counts-only, never repo names/URLs.** The repo is intended to be
   public, and Actions logs on a public repo are world-readable. Keep starred-repo
   details out of logs.
+- **Sources are isolated.** `sync()` wraps each source; a failing forge (bad
+  token, API error) is logged and skipped so the others still sync. The run
+  still `raise SystemExit`s at the end if any source failed, so CI goes red.
 
 ## Conventions
 
 - Tokens come from env via `python-decouple` (`config.py`); never hard-code them.
-  The GitHub token variable is `GITHUB_STAR_TOKEN` — `GITHUB_TOKEN` is reserved by
-  the Actions runner.
+  The GitHub token variable is `GH_STAR_TOKEN` — GitHub Actions rejects secret
+  names starting with the reserved `GITHUB_` prefix.
 - `[tool.uv] package = false` — this is an app, not a packaged library; run it as
   a module (`python -m raindrop_stars`).

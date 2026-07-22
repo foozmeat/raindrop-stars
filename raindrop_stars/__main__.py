@@ -18,11 +18,21 @@ def sync() -> None:
     collection_id = client.get_or_create_collection(config.COLLECTION_NAME)
     seen = client.existing_links(collection_id)
 
-    # Log counts only -- repo names/URLs are kept out of the (public) logs.
+    # Each forge is isolated: one failing source logs a warning and is skipped,
+    # so the others still sync. Log counts only -- repo names/URLs are kept out
+    # of the (public) logs.
     new_repos = []
+    failed = []
     for source in sources:
+        try:
+            found = list(source.iter_starred())
+        except Exception as exc:
+            failed.append(source.name)
+            log.warning("%s: skipped -- %s", source.name, exc)
+            continue
+
         count = 0
-        for repo in source.iter_starred():
+        for repo in found:
             if repo.url in seen:
                 continue
             seen.add(repo.url)
@@ -38,6 +48,9 @@ def sync() -> None:
         len(new_repos),
         config.COLLECTION_NAME,
     )
+
+    if failed:
+        raise SystemExit(f"Sources failed: {', '.join(failed)}")
 
 
 def cleanup(assume_yes: bool) -> None:

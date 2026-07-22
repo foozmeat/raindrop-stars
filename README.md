@@ -38,9 +38,10 @@ so GitHub-only (or any subset) works fine. See `.env.example` for every option.
 
 - **Raindrop** — Settings → Integrations → create an app → copy the *test token*.
 - **GitHub** — a PAT with read access to your stars. Store it as
-  `GITHUB_STAR_TOKEN`, **not** `GITHUB_TOKEN` (that name is reserved on Actions).
+  `GH_STAR_TOKEN` — GitHub Actions rejects secret names starting with `GITHUB_`.
 - **GitLab** — a PAT with the `read_api` scope.
-- **Codeberg** — an access token with `read:repository`.
+- **Codeberg** — an access token with **both** `read:user` and `read:repository`
+  (the `/user/starred` endpoint requires both).
 
 ## Cleaning up imported bookmarks
 

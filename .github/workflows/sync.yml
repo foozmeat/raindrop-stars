@@ -20,6 +20,6 @@ jobs:
       - run: uv run python -m raindrop_stars
         env:
           RAINDROP_TOKEN:    ${{ secrets.RAINDROP_TOKEN }}
-          GITHUB_STAR_TOKEN: ${{ secrets.GITHUB_STAR_TOKEN }}
+          GH_STAR_TOKEN:     ${{ secrets.GH_STAR_TOKEN }}
           GITLAB_TOKEN:      ${{ secrets.GITLAB_TOKEN }}
           CODEBERG_TOKEN:    ${{ secrets.CODEBERG_TOKEN }}
