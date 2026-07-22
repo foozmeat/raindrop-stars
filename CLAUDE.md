@@ -44,13 +44,18 @@ Sources fan in, one Raindrop sink writes out:
 - `raindrop_stars/__main__.py` — argparse entry point. Default command is `sync`
   (build sources, dedup against the collection's existing URLs, bulk-create the
   rest). The `cleanup` command permanently deletes bookmarks this tool imported,
-  identified by the `ALL_SOURCE_NAMES` tags; it requires `--yes` and deletes via
+  identified by the `MANAGED_TAG` marker; it requires `--yes` and deletes via
   `RaindropClient.delete_permanently` (move to Trash, then purge from `-99`).
+
+Each bookmark is tagged with `MANAGED_TAG` (`starred-import`, defined in
+`raindrop_stars/__init__.py`) and its forge (`github`/`gitlab`/`codeberg`).
 
 Key invariants:
 
 - **Dedup is by repo URL**, which is what makes the job idempotent (backfill on
   first run, incremental after). Preserve this when changing the sink.
+- **`MANAGED_TAG` is the cleanup key.** Match on it, not the forge tags, so
+  hand-added bookmarks (which may share a forge name as a tag) are never deleted.
 - **A source is active only if its token is set** (`build_sources()`), so any
   subset of forges works. Don't make a missing token fatal.
 - **Logging is counts-only, never repo names/URLs.** The repo is intended to be

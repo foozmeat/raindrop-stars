@@ -4,7 +4,8 @@
 
 Sync the repositories you've starred on **GitHub**, **GitLab**, and **Codeberg**
 into a single [Raindrop.io](https://raindrop.io) collection. Each bookmark is
-tagged with its source forge (`github` / `gitlab` / `codeberg`).
+tagged with `starred-import` (a marker so imports can be cleaned up precisely)
+and its source forge (`github` / `gitlab` / `codeberg`).
 
 There is no hosted (IFTTT/Zapier) path for this: none of those services offer a
 "the authenticated user starred a repo" trigger, and GitHub emits no event when
@@ -44,7 +45,7 @@ so GitHub-only (or any subset) works fine. See `.env.example` for every option.
 ## Cleaning up imported bookmarks
 
 To **permanently** delete every bookmark this tool imported (matched by the
-`github`/`gitlab`/`codeberg` tags, so hand-added bookmarks are left alone):
+`starred-import` marker tag, so hand-added bookmarks are left alone):
 
 ```sh
 uv run python -m raindrop_stars cleanup         # dry run: reports the count

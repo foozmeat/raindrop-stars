@@ -1,9 +1,9 @@
 import argparse
 import logging
 
-from . import config
+from . import MANAGED_TAG, config
 from .raindrop import RaindropClient
-from .sources import ALL_SOURCE_NAMES, build_sources
+from .sources import build_sources
 
 log = logging.getLogger("raindrop_stars")
 
@@ -44,11 +44,10 @@ def cleanup(assume_yes: bool) -> None:
     client = RaindropClient(config.RAINDROP_TOKEN)
     collection_id = client.get_or_create_collection(config.COLLECTION_NAME)
 
-    managed = set(ALL_SOURCE_NAMES)
     ids = [
         item["_id"]
         for item in client.iter_items(collection_id)
-        if managed.intersection(item.get("tags") or [])
+        if MANAGED_TAG in (item.get("tags") or [])
     ]
 
     if not ids:

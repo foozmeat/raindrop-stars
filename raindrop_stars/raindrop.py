@@ -2,6 +2,7 @@ from collections.abc import Iterator, Sequence
 
 import requests
 
+from . import MANAGED_TAG
 from .models import StarredRepo
 
 API = "https://api.raindrop.io/rest/v1"
@@ -59,7 +60,7 @@ class RaindropClient:
                     "title": r.title,
                     "excerpt": r.description,
                     "collection": {"$id": collection_id},
-                    "tags": [r.source],
+                    "tags": [MANAGED_TAG, r.source],
                     "pleaseParse": {},
                 }
                 for r in batch

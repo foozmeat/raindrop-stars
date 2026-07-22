@@ -1,0 +1,25 @@
+name: sync-stars
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # daily at 06:00 UTC
+  workflow_dispatch:        # allow manual runs from the Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+
+      - run: uv sync --frozen
+
+      - run: uv run python -m raindrop_stars
+        env:
+          RAINDROP_TOKEN:    ${{ secrets.RAINDROP_TOKEN }}
+          GITHUB_STAR_TOKEN: ${{ secrets.GITHUB_STAR_TOKEN }}
+          GITLAB_TOKEN:      ${{ secrets.GITLAB_TOKEN }}
+          CODEBERG_TOKEN:    ${{ secrets.CODEBERG_TOKEN }}
