@@ -10,3 +10,6 @@ GITLAB_URL = config("GITLAB_URL", default="https://gitlab.com")
 
 CODEBERG_TOKEN = config("CODEBERG_TOKEN", default="")
 CODEBERG_URL = config("CODEBERG_URL", default="https://codeberg.org")
+
+# Optional healthchecks.io ping URL; pinged when a sync completes successfully.
+HEALTHCHECK_URL = config("HEALTHCHECK_URL", default="")

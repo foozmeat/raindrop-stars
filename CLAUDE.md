@@ -64,6 +64,9 @@ Key invariants:
 - **Sources are isolated.** `sync()` wraps each source; a failing forge (bad
   token, API error) is logged and skipped so the others still sync. The run
   still `raise SystemExit`s at the end if any source failed, so CI goes red.
+- **Healthcheck ping is success-only.** `ping_healthcheck()` runs after the
+  `SystemExit` check, so it fires only when every source succeeded. It's a no-op
+  when `HEALTHCHECK_URL` is unset, and a failed ping is logged, not fatal.
 
 ## Conventions
 

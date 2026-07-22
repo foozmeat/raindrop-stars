@@ -23,3 +23,4 @@ jobs:
           GH_STAR_TOKEN:     ${{ secrets.GH_STAR_TOKEN }}
           GITLAB_TOKEN:      ${{ secrets.GITLAB_TOKEN }}
           CODEBERG_TOKEN:    ${{ secrets.CODEBERG_TOKEN }}
+          HEALTHCHECK_URL:   ${{ secrets.HEALTHCHECK_URL }}

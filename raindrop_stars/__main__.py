@@ -1,11 +1,22 @@
 import argparse
 import logging
 
+import requests
+
 from . import MANAGED_TAG, config
 from .raindrop import RaindropClient
 from .sources import build_sources
 
 log = logging.getLogger("raindrop_stars")
+
+
+def ping_healthcheck() -> None:
+    if not config.HEALTHCHECK_URL:
+        return
+    try:
+        requests.get(config.HEALTHCHECK_URL, timeout=10)
+    except requests.RequestException as exc:
+        log.warning("Healthcheck ping failed: %s", exc)
 
 
 def sync() -> None:
@@ -51,6 +62,8 @@ def sync() -> None:
 
     if failed:
         raise SystemExit(f"Sources failed: {', '.join(failed)}")
+
+    ping_healthcheck()
 
 
 def cleanup(assume_yes: bool) -> None:
